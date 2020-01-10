@@ -152,9 +152,11 @@ function generate_vault_config {
     cat > "$config_path" <<EOF
 ui = $enable_ui
 
-storage "gcs" {
-  bucket = "$gcs_bucket"
-  credentials_file = "$gcp_creds_file"
+storage "consul" {
+  address = "127.0.0.1:8500"
+  path    = "vault/"
+  scheme  = "http"
+  service = "vault"
 }
 
 ha_storage "consul" {
@@ -187,9 +189,11 @@ EOF
     cat > "$config_path" <<EOF
 ui = $enable_ui
 
-storage "gcs" {
-  bucket = "$gcs_bucket"
-  credentials_file = "$gcp_creds_file"
+storage "consul" {
+  address = "127.0.0.1:8500"
+  path    = "vault/"
+  scheme  = "http"
+  service = "vault"
 }
 
 ha_storage "consul" {

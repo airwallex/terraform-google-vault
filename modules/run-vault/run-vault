@@ -152,11 +152,6 @@ function generate_vault_config {
     cat > "$config_path" <<EOF
 ui = $enable_ui
 
-storage "spanner" {
-  database    = "projects/$auto_unseal_project/instances/vault-external-storage/databases/vault-data"
-  ha_enabled = "true"
-}
-
 seal "gcpckms" {
   project     = "$auto_unseal_project"
   region      = "$auto_unseal_region"
@@ -179,11 +174,6 @@ EOF
     log_info "Creating default Vault config file in $config_path"
     cat > "$config_path" <<EOF
 ui = $enable_ui
-
-storage "spanner" {
-  database    = "projects/$auto_unseal_project/instances/vault-external-storage/databases/vault-data"
-  ha_enabled = "true"
-}
 
 # HA settings
 cluster_addr  = "https://$instance_ip_address:$cluster_port"

@@ -155,6 +155,7 @@ ui = $enable_ui
 storage "spanner" {
   database    = "projects/$auto_unseal_project/instances/vault-external-storage/databases/vault-data"
   ha_enabled = "true"
+  max_parallel = 256
 }
 
 seal "gcpckms" {
@@ -183,6 +184,7 @@ ui = $enable_ui
 storage "spanner" {
   database    = "projects/$auto_unseal_project/instances/vault-external-storage/databases/vault-data"
   ha_enabled = "true"
+  max_parallel = 256
 }
 
 # HA settings

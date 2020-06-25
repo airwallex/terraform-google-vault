@@ -57,7 +57,9 @@ resource "google_compute_region_instance_group_manager" "vault" {
   project = var.gcp_project_id
 
   base_instance_name = var.cluster_name
-  instance_template  = data.template_file.compute_instance_template_self_link.rendered
+  version {
+    instance_template  = data.template_file.compute_instance_template_self_link.rendered
+  }
   region             = var.gcp_region
 
   # Restarting a Vault server has an important consequence: The Vault server has to be manually unsealed again. Therefore,

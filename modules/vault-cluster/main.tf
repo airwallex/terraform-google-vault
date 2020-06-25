@@ -62,10 +62,20 @@ resource "google_compute_region_instance_group_manager" "vault" {
   }
   region             = var.gcp_region
 
-  # Restarting a Vault server has an important consequence: The Vault server has to be manually unsealed again. Therefore,
-  # the update strategy used to roll out a new GCE Instance Template must be a rolling update. But since Terraform does
-  # not yet support ROLLING_UPDATE, such updates must be manually rolled out for now.
-  update_strategy = var.instance_group_update_strategy
+  dynamic "update_policy" {
+    for_each = [var.update_policy]
+    content {
+      type                         = update_policy.value.type
+      minimal_action               = update_policy.value.minimal_action
+      instance_redistribution_type = lookup(update_policy.value, "instance_redistribution_type", null) 
+      max_surge_fixed              = lookup(update_policy.value, "max_surge_fixed", null)
+      max_surge_percent            = lookup(update_policy.value, "max_surge_percent", null)
+      max_unavailable_fixed        = lookup(update_policy.value, "max_unavailable_fixed", null)
+      max_unavailable_percent      = lookup(update_policy.value, "max_unavailable_percent", null)
+      min_ready_sec                = lookup(update_policy.value, "min_ready_sec", null)
+      
+    }
+  }
 
   target_pools = var.instance_group_target_pools
   target_size  = var.cluster_size

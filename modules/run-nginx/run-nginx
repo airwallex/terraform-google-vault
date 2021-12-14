@@ -185,7 +185,7 @@ function generate_supervisor_config {
   log_info "Creating Supervisor config file to run Nginx in $supervisor_config_path"
   cat > "$supervisor_config_path" <<EOF
 [program:nginx]
-command=/usr/bin/pidproxy /var/run/nginx.pid $nginx_bin_dir/nginx -c $nginx_config_dir/nginx.conf
+command=/usr/bin/pidproxy /var/run/nginx/nginx.pid $nginx_bin_dir/nginx -c $nginx_config_dir/nginx.conf
 stdout_logfile=$nginx_log_dir/nginx-stdout.log
 stderr_logfile=$nginx_log_dir/nginx-error.log
 numprocs=1

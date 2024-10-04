@@ -152,6 +152,10 @@ function create_vault_install_paths {
 
   log_info "Changing ownership of $path to $username"
   sudo chown -R "$username:$username" "$path"
+
+  # Ensure that others have execute permission to traverse these directories
+  sudo chmod o+x "$path"
+  sudo chmod o+x "$path/bin"
 }
 
 function fetch_binary {
@@ -199,30 +203,12 @@ function install_binary {
 function configure_mlock {
   log_info "Giving Vault permission to use the mlock syscall"
 
-  retries=3
-  wait_time=10
-  for i in $(seq 1 $retries); do
-    if [ -f /opt/vault/bin/vault ]; then
-      sudo setcap cap_ipc_lock=+ep /opt/vault/bin/vault
-      if [ $? -eq 0 ]; then
-        log_info "Successfully applied setcap to Vault binary."
-        return 0
-      else
-        log_error "Failed to apply setcap on attempt $i"
-      fi
-    else
-      log_warn "Vault binary not found. Retrying in $wait_time seconds... (Attempt $i/$retries)"
-      whoami
-      sudo ls /opt/vault/bin
-      sudo ls -l /opt/vault
-      sleep 150
-      sleep $wait_time
-    fi
-  done
-
-  sleep 1000
-  log_error "Vault binary not found at /opt/vault/bin/vault after $retries attempts."
-  exit 1
+  if [ -f /opt/vault/bin/vault ]; then
+    sudo setcap cap_ipc_lock=+ep /opt/vault/bin/vault
+  else
+    log_error "Vault binary not found at /opt/vault/bin/vault"
+    exit 1
+  fi
 }
 
 

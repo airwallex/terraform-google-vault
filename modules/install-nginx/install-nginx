@@ -111,7 +111,7 @@ function create_linux_user {
     log_info "User $username already exists. Will not create again."
   else
     log_info "Creating user named $username"
-    useradd "$username"
+    useradd --user-group "$username"
   fi
 }
 

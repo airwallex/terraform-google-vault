@@ -134,7 +134,7 @@ function create_vault_user {
     log_info "User $username already exists. Will not create again."
   else
     log_info "Creating user named $username"
-    sudo useradd "$username"
+    sudo useradd --user-group "$username"
   fi
 }
 

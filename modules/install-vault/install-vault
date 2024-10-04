@@ -212,7 +212,10 @@ function configure_mlock {
       fi
     else
       log_warn "Vault binary not found. Retrying in $wait_time seconds... (Attempt $i/$retries)"
-      ls /opt/vault/bin
+      whoami
+      sudo ls /opt/vault/bin
+      sudo ls -l /opt/vault
+      sleep 150
       sleep $wait_time
     fi
   done
